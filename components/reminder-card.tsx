@@ -6,10 +6,17 @@ import {
   View,
 } from "react-native";
 import { Switch } from "@expo/ui/jetpack-compose";
+import * as Haptics from "expo-haptics";
+
 import { useState } from "react";
 
 export const ReminderCard = () => {
   const [enabled, setEnabled] = useState(false);
+
+  const onChangeEnabled = async (value: boolean) => {
+    setEnabled(value);
+    await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+  };
 
   return (
     <Pressable
@@ -27,7 +34,7 @@ export const ReminderCard = () => {
       <View style={styles.controlsContainer}>
         <Text style={styles.pattern}>Default</Text>
         <TouchableWithoutFeedback>
-          <Switch value={enabled} onValueChange={setEnabled} />
+          <Switch value={enabled} onValueChange={onChangeEnabled} />
         </TouchableWithoutFeedback>
       </View>
     </Pressable>
