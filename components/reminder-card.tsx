@@ -8,12 +8,20 @@ import {
 import { Switch } from "@expo/ui/jetpack-compose";
 import * as Haptics from "expo-haptics";
 
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 
-export const ReminderCard = () => {
+type ReminderCardProps = {
+  onSetEditing: Dispatch<SetStateAction<boolean>>;
+};
+
+export const ReminderCard = ({ onSetEditing }: ReminderCardProps) => {
   const [enabled, setEnabled] = useState(false);
 
-  const onChangeEnabled = async (value: boolean) => {
+  const onEdit = () => {
+    onSetEditing(true);
+  };
+
+  const onToggleEnabled = async (value: boolean) => {
     setEnabled(value);
     await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
   };
@@ -25,6 +33,7 @@ export const ReminderCard = () => {
         foreground: true,
       }}
       style={styles.card}
+      onPress={onEdit}
     >
       <View style={styles.detailsContainer}>
         <Text style={styles.date}>Jan. 20 (Tue)</Text>
@@ -34,7 +43,7 @@ export const ReminderCard = () => {
       <View style={styles.controlsContainer}>
         <Text style={styles.pattern}>Default</Text>
         <TouchableWithoutFeedback>
-          <Switch value={enabled} onValueChange={onChangeEnabled} />
+          <Switch value={enabled} onValueChange={onToggleEnabled} />
         </TouchableWithoutFeedback>
       </View>
     </Pressable>
