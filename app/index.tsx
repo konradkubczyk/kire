@@ -19,6 +19,12 @@ import {
   ReminderDraft,
   scheduleReminderNotification,
 } from "@/lib/reminders";
+import {
+  cancelScheduledNotifications,
+  createId,
+  normalizeReminder,
+  reconcileScheduledStatuses,
+} from "@/lib/notifications";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -31,52 +37,6 @@ Notifications.setNotificationHandler({
 });
 
 const STORAGE_KEY = "kire.reminders.v1";
-const DEFAULT_WEEKDAYS = [0, 1, 2, 3, 4, 5, 6];
-
-const createId = () =>
-  `rem-${Date.now()}-${Math.random().toString(16).slice(2)}`;
-
-const normalizeReminder = (reminder: Reminder): Reminder => {
-  const legacyNotificationId = (
-    reminder as Reminder & {
-      notificationId?: string;
-    }
-  ).notificationId;
-  const notificationIds =
-    reminder.notificationIds ??
-    (legacyNotificationId ? [legacyNotificationId] : []);
-
-  return {
-    ...reminder,
-    weekdays:
-      Array.isArray(reminder.weekdays) && reminder.weekdays.length > 0
-        ? reminder.weekdays
-        : DEFAULT_WEEKDAYS,
-    notificationIds,
-  };
-};
-
-const cancelScheduledNotifications = async (ids: string[]) => {
-  await Promise.all(
-    ids.map((id) => Notifications.cancelScheduledNotificationAsync(id)),
-  );
-};
-
-const reconcileScheduledStatuses = async (items: Reminder[]) => {
-  const scheduled = await Notifications.getAllScheduledNotificationsAsync();
-  const scheduledIds = new Set(scheduled.map((item) => item.identifier));
-
-  return items.map((reminder) => {
-    if (!reminder.enabled) {
-      return reminder;
-    }
-    const notificationIds = reminder.notificationIds ?? [];
-    const hasScheduled = notificationIds.some((id) => scheduledIds.has(id));
-    return hasScheduled
-      ? reminder
-      : { ...reminder, enabled: false, notificationIds: [] };
-  });
-};
 
 export default function Index() {
   const [isEditReminderModalOpen, setIsEditReminderModalOpen] = useState(false);
