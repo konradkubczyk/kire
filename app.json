@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "kire",
+    "name": "Kire",
     "slug": "kire",
-    "version": "1.0.0",
+    "version": "0.0.1",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "kire",
@@ -10,7 +10,7 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.kire"
+      "bundleIdentifier": "com.kubczyk.kire"
     },
     "android": {
       "adaptiveIcon": {
@@ -21,7 +21,7 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.anonymous.kire"
+      "package": "com.kubczyk.kire"
     },
     "web": {
       "output": "static",
@@ -45,6 +45,12 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "278f1438-7fcf-4aef-b32d-a7e26e08ea63"
+      }
     }
   }
 }
