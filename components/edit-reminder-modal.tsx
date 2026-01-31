@@ -69,6 +69,8 @@ export const EditReminderModal = ({
     reminder?.weekdays ?? DEFAULT_WEEKDAYS,
   );
 
+  const [scrollEnabled, setScrollEnabled] = useState(true);
+
   const selectedPatternIndex = useMemo(
     () =>
       Math.max(
@@ -131,13 +133,21 @@ export const EditReminderModal = ({
           <ScrollView
             showsVerticalScrollIndicator={false}
             contentContainerStyle={styles.scrollContent}
+            scrollEnabled={scrollEnabled}
+            nestedScrollEnabled
           >
-            <DateTimePicker
-              displayedComponents="hourAndMinute"
-              initialDate={initialDate.toISOString()}
-              onDateSelected={setTime}
-              style={styles.timePicker}
-            />
+            <View
+              onTouchStart={() => setScrollEnabled(false)}
+              onTouchEnd={() => setScrollEnabled(true)}
+              onTouchCancel={() => setScrollEnabled(true)}
+            >
+              <DateTimePicker
+                displayedComponents="hourAndMinute"
+                initialDate={initialDate.toISOString()}
+                onDateSelected={setTime}
+                style={styles.timePicker}
+              />
+            </View>
 
             <View style={styles.section}>
               <Text style={styles.label}>Vibration pattern</Text>
