@@ -3,12 +3,18 @@
   "main": "expo-router/entry",
   "version": "1.0.0",
   "scripts": {
+    "prestart": "npm run generate-licenses",
     "start": "expo start",
     "reset-project": "node ./scripts/reset-project.js",
+    "preandroid": "npm run generate-licenses",
     "android": "expo run:android",
+    "preios": "npm run generate-licenses",
     "ios": "expo run:ios",
+    "preweb": "npm run generate-licenses",
     "web": "expo start --web",
-    "lint": "expo lint"
+    "lint": "expo lint",
+    "generate-licenses": "node scripts/generate-licenses.js",
+    "postinstall": "npm run generate-licenses"
   },
   "dependencies": {
     "@expo/ui": "~0.2.0-beta.9",
